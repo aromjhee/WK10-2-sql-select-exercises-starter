@@ -75,6 +75,8 @@ INSERT INTO airports VALUES(DEFAULT, 23, 'DTW',	'DTW',	'KDTW',	'Detroit Metropol
 INSERT INTO airports VALUES(DEFAULT, 24, 'BNA',	'BNA',	'KBNA',	'Nashville International Airport');
 INSERT INTO airports VALUES(DEFAULT, 25, 'PDX',	'PDX',	'KPDX',	'Portland International Airport');
 
+
+-- PHASE 3
 -- pipe seed file into "travel" database
 cat 
 /Users/aromjhee/Desktop/WKS/WK10/WK10-2-sql-
@@ -145,3 +147,16 @@ WHERE
 SELECT city, population_estimate_2018, population_census_2010
 FROM cities
 WHERE (population_estimate_2018 - population_census_2010) > 200000;
+
+
+-- PHASE 4
+-- Write a SQL query using an INNER JOIN to join data from the "cities" table with data from the "airports" table using the city_id foreign key. Show the airport names and city names only. 
+SELECT airports.name, city 
+FROM cities INNER JOIN airports ON (cities.id = airports.city_id);
+-- SELECT airports.name, city 
+-- FROM cities INNER JOIN airports ON (airports.city_id = cities.id);
+
+-- Write a SQL query using an INNER JOIN to join data from the "cities" table with data from the "airports" table to find out how many airports are in New York City using the city name. (Note: Use the aggregate function COUNT () to count the number of matching rows.)
+SELECT COUNT(*)
+FROM cities INNER JOIN airports ON (cities.id = airports.city_id)
+WHERE city = 'New York';
