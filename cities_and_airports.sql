@@ -74,3 +74,74 @@ INSERT INTO airports VALUES(DEFAULT, 22, 'ELP',	'ELP',	'KELP',	'El Paso Internat
 INSERT INTO airports VALUES(DEFAULT, 23, 'DTW',	'DTW',	'KDTW',	'Detroit Metropolitan Wayne County Airport');
 INSERT INTO airports VALUES(DEFAULT, 24, 'BNA',	'BNA',	'KBNA',	'Nashville International Airport');
 INSERT INTO airports VALUES(DEFAULT, 25, 'PDX',	'PDX',	'KPDX',	'Portland International Airport');
+
+-- pipe seed file into "travel" database
+cat 
+/Users/aromjhee/Desktop/WKS/WK10/WK10-2-sql-
+select-exercises-starter/cities_and_airports.sql | psql -d travel
+
+-- Write a SQL query that returns the city, state, and estimated population in 2018 from the "cities" table.
+SELECT city, state, population_estimate_2018
+FROM cities;
+
+-- Write a SQL query that returns all of the airport names contained in the "airports" table.
+SELECT name
+FROM airports;
+
+-- Write a SQL query that uses a WHERE clause to get the estimated population in 2018 of the city of San Diego.
+SELECT city, population_estimate_2018
+FROM cities
+WHERE city = 'San Diego';
+
+-- Write a SQL query that uses a WHERE clause to get the city, state, and estimated population in 2018 of cities in this list: Phoenix, Jacksonville, Charlotte, Nashville.
+SELECT city, state, population_estimate_2018
+FROM cities
+WHERE city IN ('Pheonix', 'Jacksonville', 'Charlotte', 'Nashville');
+
+-- Write a SQL query that uses a WHERE clause to get the cities with an estimated 2018 population between 800,000 and 900,000 people. Show the city, state, and estimated population in 2018 columns.
+SELECT city, state, population_estimate_2018
+FROM cities
+WHERE population_estimate_2018 BETWEEN 800000 AND 900000;
+
+-- Write a SQL query that uses a WHERE clause to get the names of the cities that had an estimated population in 2018 of at least 1 million people (or 1,000,000 people).
+SELECT city
+FROM cities
+WHERE population_estimate_2018 >= 1000000;
+
+-- Write a SQL query to get the city and estimated population in 2018 in number of millions (i.e. without zeroes at the end: 1 million), and that uses a WHERE clause to return only the cities in Texas.
+SELECT city, population_estimate_2018/1000000
+FROM cities
+WHERE state = 'Texas';
+
+-- Write a SQL query that uses a WHERE clause to get the city, state, and estimated population in 2018 of cities that are NOT in the following states: New York, California, Texas.
+SELECT city, state, population_estimate_2018
+FROM cities
+WHERE state NOT IN ('New York', 'California', 'Texas'); 
+
+
+-- Write a SQL query that uses a WHERE clause with the LIKE operator to get the city, state, and estimated population in 2018 of cities that start with the letter "S". (Note: See the PostgreSQL doc on Pattern Matching for more information.)
+SELECT city, state, population_estimate_2018
+FROM cities
+WHERE city LIKE 'S%';
+
+-- Write a SQL query that uses a WHERE clause to find the cities with either a land area of over 400 square miles OR a population over 2 million people (or 2,000,000 people). Show the city name, the land area, and the estimated population in 2018.
+SELECT city, land_area_sq_mi_2016, population_estimate_2018
+FROM cities
+WHERE land_area_sq_mi_2016 > 400 OR population_estimate_2018 > 2000000;
+
+-- Write a SQL query that uses a WHERE clause to find the cities with either a land area of over 400 square miles OR a population over 2 million people (or 2,000,000 people) -- but not the cities that have both. Show the city name, the land area, and the estimated population in 2018.
+SELECT city, land_area_sq_mi_2016, population_estimate_2018
+FROM cities
+WHERE 
+  (land_area_sq_mi_2016 > 400 
+  OR 
+  population_estimate_2018 > 2000000)
+  AND NOT
+  (land_area_sq_mi_2016 > 400 
+  AND
+  population_estimate_2018 > 2000000);
+
+-- Write a SQL query that uses a WHERE clause to find the cities where the population has increased by over 200,000 people from 2010 to 2018. Show the city name, the estimated population in 2018, and the census population in 2010.
+SELECT city, population_estimate_2018, population_census_2010
+FROM cities
+WHERE (population_estimate_2018 - population_census_2010) > 200000;
