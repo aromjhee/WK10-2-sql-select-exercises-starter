@@ -160,3 +160,24 @@ FROM cities INNER JOIN airports ON (cities.id = airports.city_id);
 SELECT COUNT(*)
 FROM cities INNER JOIN airports ON (cities.id = airports.city_id)
 WHERE city = 'New York';
+
+-- Bonuses
+-- Apostrophe: Write a SQL query to get all three ID codes (the Federal Aviation Administration (FAA) ID, the International Air Transport Association (IATA) ID, and the International Civil Aviation Organization (ICAO) ID) from the "airports" table for Chicago O'Hare International Airport. (Note: You'll need to escape the quotation mark in O'Hare. See How to include a single quote in a SQL query.)
+SELECT faa_id, iata_id, icao_id
+FROM airports
+WHERE name = 'Chicago O''Hare International Airport';
+
+-- Formatting Commas: Refactor Phase 2, Query #1 to turn the INT for estimated population in 2018 into a character string with commas. (Note: See Data Type Formatting Functions). Phase 2, Query #1: Write a SQL query that returns the city, state, and estimated population in 2018 from the "cities" table. 
+SELECT city, state, to_char(population_estimate_2018, '9,999,999')
+FROM cities;
+
+-- Decimals and Rounding: Refactor Phase 3, Query #5 to turn number of millions from an integer into a decimal rounded to a precision of two decimal places. (Note: See Numeric Types and the ROUND function.) Phase 3, Query #5: Write a SQL query to get the city and estimated population in 2018 in number of millions (i.e. without zeroes at the end: 1 million), and that uses a WHERE clause to return only the cities in Texas. 
+SELECT city, round(population_estimate_2018/1000000::decimal, 2)
+FROM cities
+WHERE state = 'Texas';
+
+-- ORDER BY and LIMIT Clauses: Refactor Phase 3, Query #10 to return only one city with the biggest population increase from 2010 to 2018. Show the city name, the estimated population in 2018, and the census population in 2010 for that city. (_Note: You'll do the same calculation as before, but instead of comparing it to 200,000, use the ORDER BY Clause with the LIMIT Clause to sort the results and grab only the top result.). Phase 3, Query #10: Write a SQL query that uses a WHERE clause to find the cities where the population has increased by over 200,000 people from 2010 to 2018. Show the city name, the estimated population in 2018, and the census population in 2010.
+SELECT city, (population_estimate_2018 - population_census_2010) AS population_increase
+FROM cities
+ORDER BY population_increase DESC
+LIMIT 1;
